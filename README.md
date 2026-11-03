@@ -1,7 +1,6 @@
 # Zählen bis auf Symmetrie – Burnside und Pólya – Streamlit-Demo
 
-<!-- TODO nach dem Deploy: direkt hierher den Live-Link setzen (Leerzeile davor und danach):
-**[→ Demo live ausprobieren](https://sebastianhanisch-burnside-polya-demo.streamlit.app/)** -->
+**[→ Demo live ausprobieren](https://sebastianhanisch-burnside-polya-demo.streamlit.app/)**
 
 Stück 11 von 16 der Reihe **„Abzählen und erzeugende Funktionen“** in der „Konzepte“-Reihe für die Website „Sebastian Hanisch – Operations Research und Machine Learning“ (die Linie wird erst vollständig veröffentlicht). Vorgänger sind `aufzaehlen-rekursion-demo` (Stück 1), `rationale-ef-demo` (Stück 2), `symbolische-methode-demo` (Stück 3), `semiring-rekursion-demo` (Stück 4), `multimengen-partitionen-demo` (Stück 5), `beschriftete-strukturen-demo` (Stück 6), `siebformel-demo` (Stück 7), `zaehlen-nach-parameter-demo` (Stück 8), `asymptotik-demo` (Stück 9) und `gleichverteilt-ziehen-demo` (Stück 10); sie haben Objekte gezählt, **als wären alle verschieden**. Diese Demo zählt **bis auf Symmetrie**: eine Kette, die man dreht, ein Brett, das man wendet, ein Graph, dessen Knoten man umbenennt, ein Spielplan, in dem man die Teams umbenennt. Die Antwort ist die Zahl der **Bahnen** einer Gruppe G auf der Menge X der Objekte. **Burnside:** sie ist das **Mittel der Fixpunkte** über alle Gruppenelemente. **Pólya:** bei Färbungen ist die Fixpunktzahl k^(Zahl der Zyklen), das ist der **Zyklenindex**, und mit einem Gewicht statt k zählt derselbe Satz die Bahnen nach Gewicht. Die einfache Näherung **Gesamtzahl/|G|** ist nur eine untere Schranke und trifft erst für große n.
 
@@ -123,4 +122,4 @@ Gebaut mit Streamlit, Plotly und fpdf2.
 
 ---
 
-Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zu den Demos: [Interaktive Demos](https://sebastianhanisch.net/demos.html).
+Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zur Reihe: [Abzählen: von der Rekursion zur Verfahrenswahl](https://sebastianhanisch.net/konzepte-abzaehlen.html).
