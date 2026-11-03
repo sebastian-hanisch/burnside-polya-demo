@@ -35,7 +35,7 @@ def test_answer_graphs_exact():
 def test_answer_schedules_exact():
     kind, text = answer("Spielpläne mit 8 Teams")
     assert kind == "success"
-    assert text == ("8 Teams: 6.240 Spielpläne (Mengen von 7 Runden), bis auf Umbenennen der Teams 6 Bahnen mit |Aut| = 1344, 96, 64, 42, 24, 16 (3 Wege geben dieselbe Zahl). "
+    assert text == ("8 Teams: 6.240 Spielpläne (Mengen von 7 Runden), bis auf Umbenennen der Teams 6 Bahnen mit |Aut| = 1344, 96, 64, 42, 24, 16 (die Planzahl auf zwei Wegen gleich, die Bahnenzahl durch Union-Find). "
                     "Die Näherung Gesamtzahl/|G| = 0,155 liegt 97,42 % daneben (zu klein); sie ist nur eine untere Schranke. Die Näherung ist hier nutzlos, weil jeder Plan Symmetrien hat.")
 
 
@@ -51,14 +51,14 @@ def test_way_rows_of_the_standard_case():
 
 
 def test_ways_verdict_exact():
-    assert ev.verdict_ways(ev.ways_rows()) == ("success", "In allen 8 Aufgaben geben die Rechenwege dieselbe Bahnenzahl (2 bis 3 Wege je Aufgabe): die Formel aus dem Zyklenindex, die Summe über alle Gruppenelemente und das Aufzählen der Bahnen.")
+    assert ev.verdict_ways(ev.ways_rows()) == ("success", "In allen 8 Aufgaben geben die Rechenwege dieselbe Bahnenzahl (jede Aufgabe auf 3 Wegen; bei den Spielplänen zwei Wege für die Planzahl, einer für die Bahnenzahl): die Formel aus dem Zyklenindex, die Summe über alle Gruppenelemente und das Aufzählen der Bahnen.")
 
 
 def test_approx_verdict_exact():
     kind, text = ev.verdict_approx(ev.approx_rows())
     assert kind == "warning"
     assert text == ("Die Näherung Gesamtzahl/|G| ist nur eine untere Schranke (für alle geprüften n und k): bei Halsketten mit 2 Farben liegt sie 23,8 % daneben bei n = 6, 0,11 % bei n = 20 und 0,0033 % bei n = 30. "
-                    "Der Fehler fällt nicht gleichmäßig: n = 11 hat 0,97 %, n = 12 aber 3,03 %, weil n = 12 viele Teiler hat; unter 1 % liegt der Fehler erst ab n = 11 (nicht für alle größeren n), unter 0,1 % ab n = 17. "
+                    "Der Fehler fällt nicht gleichmäßig: n = 11 hat 0,97 %, n = 12 aber 3,03 %, weil n = 12 viele Teiler hat; unter 1 % liegt der Fehler erstmals bei n = 11, unter 0,1 % erstmals bei n = 17 (beide nicht für alle größeren n). "
                     "Bei den Graphen ist die exakte Zahl 1,238-mal so groß wie die Näherung bei n = 10, 1,013-mal bei n = 15 und 1,0007-mal bei n = 20.")
 
 

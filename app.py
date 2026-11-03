@@ -2,7 +2,7 @@
 Sebastian Hanisch - Operations Research und Machine Learning
 
 Stück 11 der Reihe „Abzählen und erzeugende Funktionen“: Wie viele Objekte gibt es bis auf Symmetrie? Burnside: die Zahl der Bahnen ist das Mittel der Fixpunkte über alle Gruppenelemente; Pólya macht daraus
-den Zyklenindex (auch mit Gewicht). Die einfache Näherung Gesamtzahl/|G| ist nur eine untere Schranke und trifft erst für große n. Beispiele: Perlenketten, Bretter, Graphen und die Spielpläne eines Rundenturniers.
+den Zyklenindex (auch mit Gewicht). Die einfache Näherung Gesamtzahl/|G| ist nur eine untere Schranke und trifft bei Halsketten und Graphen erst für große n. Beispiele: Perlenketten, Bretter, Graphen und die Spielpläne eines Rundenturniers.
 Aufbau und Regeln: DEMO-PLAYBOOK.md (§2).
 
 Lauffähig mit: streamlit run app.py
@@ -102,7 +102,7 @@ st.markdown(
 **Wie viele Objekte gibt es bis auf Symmetrie?** Stück 1 bis 10 haben gezählt, als wären alle Objekte verschieden. Oft sind zwei Objekte „dasselbe“: eine Kette, die man dreht, ein Brett, das man wendet, ein Graph, dessen Knoten man umbenennt,
 ein Spielplan, in dem man die Teams umbenennt. Die Frage ist dann die Zahl der **Bahnen** einer Gruppe $G$ auf der Menge $X$ der Objekte. **Burnside:** die Zahl der Bahnen ist das **Mittel der Fixpunkte**,
 $|X/G| = \\frac{1}{|G|} \\sum_{g \\in G} |\\mathrm{Fix}(g)|$. **Pólya:** bei Färbungen ist $|\\mathrm{Fix}(g)| = k^{\\text{Zyklen von } g}$ (der **Zyklenindex**), und mit einem Gewicht statt $k$ zählt derselbe Satz die Bahnen nach Gewicht.
-Die einfache Näherung **Gesamtzahl$/|G|$** ist nur eine untere Schranke und trifft erst für große $n$ (Experiment 2).
+Die einfache Näherung **Gesamtzahl$/|G|$** ist nur eine untere Schranke und trifft bei Halsketten und Graphen erst für große $n$ (Experiment 2).
 
 Weiter unten: **fünf Experimente** (**🔬**), eine **🎲 Spielwiese**, **🚧 Wo die Annahmen enden** und der Expander **📐 Mathematische Formulierung**.
 """
@@ -168,7 +168,7 @@ st.markdown("---")
 # --- Experimente ---------------------------------------------------------------------------------------------------------------------------
 
 st.subheader("🔬 Experiment 1: Dieselbe Zahl auf mehreren Wegen")
-st.caption("Acht Aufgaben, jede auf zwei bis drei unabhängigen Wegen: geschlossene Formel aus dem Zyklenindex, Burnside über alle Gruppenelemente, Aufzählen der Bahnen (kleinste Form oder Union-Find).")
+st.caption("Acht Aufgaben, jede auf drei unabhängigen Wegen (bei den Spielplänen zwei Wege für die Planzahl, einer für die Bahnenzahl): geschlossene Formel aus dem Zyklenindex, Burnside über alle Gruppenelemente, Aufzählen der Bahnen (kleinste Form oder Union-Find).")
 ways = _ways()
 st.dataframe([{"Familie": r["Familie"], "n": r["n"], "Farben": "–" if r["k"] is None else str(r["k"]), "Symmetrie": r["Symmetrie"] if r["Familie"] in ("Perlenketten", "Brett s×s") else "Umbenennen", "Objekte": big_text(r["Gesamtzahl"]),
                "|G|": big_text(r["|G|"]), "Bahnen": big_text(r["Bahnen"]), "Wege": r["Wege"], "gleich": "ja" if r["gleich"] else "nein"} for r in ways], hide_index=True, width="stretch")
@@ -241,9 +241,9 @@ st.markdown(
     f"""
 | Annahme | Was passiert, wenn sie verletzt ist | Wer setzt an |
 |---|---|---|
-| **Die Gruppe ist bekannt und klein genug** | Burnside über alle Elemente ist nur für kleine Gruppen möglich ({C.GRAPH_ALL_ELEMENTS_MAX}! = 40.320 Permutationen sind bei den Graphen die Grenze); darüber rechnet der Zyklenindex in $p(n)$ Summanden. | Experiment 4 |
+| **Die Gruppe ist bekannt und klein genug** | Burnside über alle Elemente ist nur für kleine Gruppen möglich (die App rechnet bei den Graphen nur bis {C.GRAPH_ALL_ELEMENTS_MAX}! = 40.320 Permutationen); darüber rechnet der Zyklenindex in $p(n)$ Summanden. | Experiment 4 |
 | **Die Symmetrie ist die einzige** | Gezählt werden Bahnen genau dieser Gruppe; weitere Symmetrien (Heim- und Auswärtstausch, Zeitspiegelung bei Turnierplänen, Tausch der Farben) ändern die Zahl. | – |
-| **Die Näherung Gesamtzahl durch Gruppengröße ist gut** | Sie ist nur eine untere Schranke; der Fehler hängt von den Teilern von n ab (n = 12 schlechter als 11 und 13) und ist bei Armbändern, Graphen und Spielplänen viel größer. | Experiment 2 |
+| **Die Näherung Gesamtzahl durch Gruppengröße ist gut** | Sie ist nur eine untere Schranke; der Fehler hängt von den Teilern von n ab (n = 12 schlechter als 11 und 13) und ist bei Armbändern und Spielplänen viel größer, bei Graphen bis etwa n = 15 größer. | Experiment 2 |
 | **Aufzählen als Gegenprobe** | Nur bis {big_text(C.ENUM_LIMIT)} Färbungen, bei Graphen nur bis n = {C.GRAPH_ENUM_MAX} und bei den Spielplänen nur bis 8 Teams; darüber stehen nur die Formeln (gerechnet, nicht gegengeprüft). | – |
 | **Spielpläne mit Reihenfolge und Heimrecht** | Gezählt werden die Pläne mit ungeordneten Runden und ohne Heimrecht; mit geordneten Runden sind es (n − 1)! mal so viele. Die Zahl der Pläne für 10 und 12 Teams (396 und 526.915.620 Bahnen) steht nur in der Literatur und wird hier nicht gerechnet. | `round-robin-demo` |
 | **Die Größe ist begrenzt** | Perlenketten bis n = {C.N_CAP['Perlenketten']}, Bretter bis {C.N_CAP['Brett s×s']}×{C.N_CAP['Brett s×s']}, Graphen bis n = {C.N_CAP['Graphen']}, Spielpläne mit 4, 6 oder 8 Teams, höchstens {C.K_MAX} Farben. | – |

@@ -235,7 +235,7 @@ def verdict_answers(a: Analysis):
     near = (f" Die Näherung Gesamtzahl/|G| = {approx_text(a.approx)} liegt {percent_fine(abs(err))} {'daneben (zu klein)' if err < 0 else 'daneben (zu groß)'}; sie ist nur eine untere Schranke."
             if a.orbits != a.total else " Ohne Symmetrie ist jedes Objekt eine eigene Bahn.")
     if s.family == "Spielpläne eines Rundenturniers":
-        return "success", (f"{a.n_eff} Teams: {big_text(a.total)} Spielpläne (Mengen von {a.n_eff - 1} Runden), bis auf Umbenennen der Teams {a.orbits} Bahnen mit |Aut| = {', '.join(map(str, a.extras['auts']))} ({agree}).{near} "
+        return "success", (f"{a.n_eff} Teams: {big_text(a.total)} Spielpläne (Mengen von {a.n_eff - 1} Runden), bis auf Umbenennen der Teams {a.orbits} Bahnen mit |Aut| = {', '.join(map(str, a.extras['auts']))} (die Planzahl auf zwei Wegen gleich, die Bahnenzahl durch Union-Find).{near} "
                            f"Die Näherung ist hier nutzlos, weil jeder Plan Symmetrien hat.")
     if s.family == "Graphen":
         return "success", (f"{a.n_eff} Knoten: {big_text(a.orbits)} Graphen bis auf Umbenennen der Knoten, gerechnet in {a.extras['types']} Summanden statt über {big_text(a.extras['elements'])} Permutationen ({agree}). "
@@ -259,8 +259,9 @@ def ways_rows() -> list[dict]:
 
 def verdict_ways(rows: list[dict]):
     ok = all(r["gleich"] for r in rows)
-    mx = max(r["Wege"] for r in rows)
-    return ("success" if ok else "error"), (f"In allen {len(rows)} Aufgaben geben die Rechenwege dieselbe Bahnenzahl (2 bis {mx} Wege je Aufgabe): die Formel aus dem Zyklenindex, die Summe über alle Gruppenelemente und das Aufzählen der Bahnen.")
+    mn, mx = min(r["Wege"] for r in rows), max(r["Wege"] for r in rows)
+    count = f"jede Aufgabe auf {mx} Wegen" if mn == mx else f"{mn} bis {mx} Wege je Aufgabe"
+    return ("success" if ok else "error"), (f"In allen {len(rows)} Aufgaben geben die Rechenwege dieselbe Bahnenzahl ({count}; bei den Spielplänen zwei Wege für die Planzahl, einer für die Bahnenzahl): die Formel aus dem Zyklenindex, die Summe über alle Gruppenelemente und das Aufzählen der Bahnen.")
 
 
 # ----------------------------------------------------------------------------- Experiment 2: die Näherung Gesamtzahl/|G|
@@ -285,7 +286,7 @@ def verdict_approx(res: dict):
     s2 = res["series"][2]
     g = res["graphs"]
     return "warning", (f"Die Näherung Gesamtzahl/|G| ist nur eine untere Schranke ({'für alle geprüften n und k' if res['lower_bound'] else 'nicht immer'}): bei Halsketten mit 2 Farben liegt sie {percent(abs(s2[6]), 1)} daneben bei n = 6, {percent(abs(s2[20]), 2)} bei n = 20 und {percent_fine(abs(s2[30]), 4)} bei n = 30. "
-                       f"Der Fehler fällt nicht gleichmäßig: n = 11 hat {percent(abs(s2[11]), 2)}, n = 12 aber {percent(abs(s2[12]), 2)}, weil n = 12 viele Teiler hat; unter 1 % liegt der Fehler erst ab n = {res['first_below_1']} (nicht für alle größeren n), unter 0,1 % ab n = {res['first_below_01']}. "
+                       f"Der Fehler fällt nicht gleichmäßig: n = 11 hat {percent(abs(s2[11]), 2)}, n = 12 aber {percent(abs(s2[12]), 2)}, weil n = 12 viele Teiler hat; unter 1 % liegt der Fehler erstmals bei n = {res['first_below_1']}, unter 0,1 % erstmals bei n = {res['first_below_01']} (beide nicht für alle größeren n). "
                        f"Bei den Graphen ist die exakte Zahl {de(float(g[10]), 3)}-mal so groß wie die Näherung bei n = 10, {de(float(g[15]), 3)}-mal bei n = 15 und {de(float(g[20]), 4)}-mal bei n = 20.")
 
 
